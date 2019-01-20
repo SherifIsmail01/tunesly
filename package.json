@@ -1,0 +1,27 @@
+{
+  "name": "tunesly",
+  "version": "1.0.0",
+  "description": "A music collection app",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SherifIsmail01/tunesly.git"
+  },
+  "author": "Sherif Ismail",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SherifIsmail01/tunesly/issues"
+  },
+  "homepage": "https://github.com/SherifIsmail01/tunesly#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.5"
+  }
+}
