@@ -1,29 +1,5 @@
 
-var albums = [{
-  _id: 132,
-  artistName: 'Nine Inch Nails',
-  name: 'The Downward Spiral',
-  releaseDate: '1994, March 8',
-  genres: [ 'industrial', 'industrial metal' ]
-}, {
-  _id: 133,
-  artistName: 'Metallica',
-  name: 'Metallica',
-  releaseDate: '1991, August 12',
-  genres: [ 'heavy metal' ]
-}, {
-  _id: 134,
-  artistName: 'The Prodigy',
-  name: 'Music for the Jilted Generation',
-  releaseDate: '1994, July 4',
-  genres: [ 'electronica', 'breakbeat hardcore', 'rave', 'jungle' ]
-}, {
-  _id: 135,
-  artistName: 'Johnny Cash',
-  name: 'Unchained',
-  releaseDate: '1996, November 5',
-  genres: [ 'country', 'rock' ]
-}];
+var db = require('../models');
 
 
 function index(req, res) {
@@ -34,47 +10,51 @@ function index(req, res) {
 		}
 		res.json(allAlbums);
 	})
-
+	
 }
 
 
 function create(req, res) {
 	// create new album with data
+	console.log(req.params);
 	var newAlbum = new db.Album({
 		name: req.body.name,
-		image: req.body.image,
+		artistName: req.body.artistName,
 		releaseDate: req.body.releaseDate,
+		genre: req.body.genre
 	});
-	// db.Album.findOne({name: req.body.name,
-	//  image: req.body.image,
-	//   releaseDate: req.body.releaseDate}, function(err, newAlbum) {
-
-	//   })
 	newAlbum.save(function (err, newAlbumInDb) {
+		console.log(newAlbumInDb);
 		res.json(newAlbumInDb);
 	});
 }
 
 function show(req, res) {
+	console.log(req.params);
 	var albumId = req.params.id
-	db.Album.findById(albumId, function(err, locateAlbum) {
+	db.Album.find({_id: albumId}, function(err, locateAlbum) {
 		res.json(locateAlbum);
 	});
 }
 
 function update(req, res) {
 	var albumId = req.params.id
-	db.Album.findByIdAndUpdate(albumId, function(err, updatedAlbum) {
+	db.Album.findByIdAndUpdate(albumId, {
 		name: req.body.name,
 		image: req.body.image,
+		artistName: req.body.artistName,
 		releaseDate: req.body.releaseDate
-	})
-	res.json(updatedAlbum);
+	}, {new:true}, function(err, updatedAlbum) {
+		res.json(updatedAlbum);
+	});
 }
 
 function destroy(req, res) {
+
+	console.log(req.params);
 	var albumId = req.params.id;
 	db.Album.findByIdAndRemove(albumId, function(err, deletedAlbum) {
+		console.log(deletedAlbum);
 		res.json(deletedAlbum);
 	});
 }
