@@ -1,5 +1,6 @@
 module.exports = {
 	api: require('./apiController'),
-	albums: require('./albumsController')
+	albums: require('./albumsController'),
+	albumsSongs: require('./albumsSongsController'),
 }
 

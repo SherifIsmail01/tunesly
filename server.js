@@ -25,6 +25,8 @@ app.get('/api/albums/:id', controllers.albums.show);
 app.put('/api/albums/:id', controllers.albums.update);
 app.delete('/api/albums/:id', controllers.albums.destroy);
 
+app.post('/api/albums/:id/songs', controllers.albumsSongs.create);
+
 
 app.listen(process.env.PORT || 3000, function() {
 	console.log('Tunesly app listening on http://localhost:3000/');
