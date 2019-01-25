@@ -1,26 +1,26 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var db = require('./models');
+let express = require('express');
+let bodyParser = require('body-parser');
+let db = require('./models');
 
-var controllers = require('./controllers');
+let controllers = require('./controllers');
 
 // generate a new express app
-var app = express();
+let app = express();
 
 // serve static files in public
-app.use(express.static('public'));
+app.use(express.static('public', { root: __dirname }));
 
 // body parser config to accept datatypes
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// define a root route: localhost:3000/
+
 app.get('/', function (req, res) {
-	res.sendFile('views/index.html', { root : __dirname });
+	res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/show.html', function (req, res) {
-	res.sendFile('views/show.html', { root : __dirname });
-})
+app.get('/show', function (req, res) {
+	res.sendFile(__dirname + '/views/show.html');
+});
 
 app.get('/api', controllers.api.index);
 app.get('/api/albums', controllers.albums.index);
@@ -28,16 +28,9 @@ app.post('/api/albums', controllers.albums.create);
 app.get('/api/albums/:id', controllers.albums.show);
 app.put('/api/albums/:id', controllers.albums.update);
 app.delete('/api/albums/:id', controllers.albums.destroy);
-
 app.post('/api/albums/:id/songs', controllers.albumsSongs.create);
 
 
 app.listen(process.env.PORT || 3000, function() {
 	console.log('Tunesly app listening on http://localhost:3000/');
 });
-
-
-
-
-
-

@@ -512,9 +512,8 @@ function showAlbumSuccess (album) {
 
           <-- end one album --> `
 
-          $('#show-album').append(showAlbum);
+          $('#show-album').prepend(showAlbum);
 
-          window.location.href = '/show.html';
+          window.location.href = '/show';
 
 }
-

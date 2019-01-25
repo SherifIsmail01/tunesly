@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tunesly-app', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/tunesly-app', { useNewUrlParser: true });
+
+mongoose.Promise = global.Promise;
 
 module.exports.Album = require('./album.js');
 module.exports.Song = require('./song.js');
