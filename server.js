@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // define a root route: localhost:3000/
 app.get('/', function (req, res) {
 	res.sendFile('views/index.html', { root : __dirname });
+});
+
+app.get('/show.html', function (req, res) {
+	res.sendFile('views/show.html', { root : __dirname });
 })
 
 app.get('/api', controllers.api.index);

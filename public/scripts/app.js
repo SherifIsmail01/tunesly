@@ -56,16 +56,17 @@ $(document).ready(function() {
     $.ajax({
       method: 'GET',
       url: '/api/albums/' + id,
-      success:  function showAlbumSuccess(album) {
-                  console.log(album);
-                  console.log(JSON.stringify(album));
-
-                  window.location = '/api/albums/' + id
-                },
+      success: showAlbumSuccess,
       error: showAlbumError
     })
 
-  })
+  });
+
+  //  edit songs button
+
+  //   <div class="col-md-4 text-center">
+  //   <button class='edit-songs btn btn-info pull-left' data-id=${album._id}>Edit Songs</button>
+  // </div>
 
 
 
@@ -108,12 +109,29 @@ $(document).ready(function() {
     var id = $(this).closest('.album').data('album-id');
     $('#editModal').data('album-id', id);
     $('#editModal').modal();
+    console.log('clicked edit album');
+    console.log('album id: ', id);
+    console.log($(this).closest('.album').data('album-art'));
+
+
+    $.ajax({
+      method: 'GET',
+      url: '/api/albums/' + id,
+      success: function (album) {
+                  console.log(album);
+                      $('#edit-album-name').val(album.name);
+                      $('#edit-artist-name').val(album.artistName);
+                      $('#edit-release-date').val(album.releaseDate);
+                      $('#edit-genre').val(album.genres);
+                      $('#edit-album-image').val(album.image);
+                },
+
+      error: function (err) {
+        console.log(err);
+      }
+    });
     
-    $('#edit-album-name').val($(e.relatedTarget).data('title'));
-    $('#edit-artist-name').val($(e.relatedTarget).data('title'));
-    $('#edit-release-date').val($(e.relatedTarget).data('title'));
-    $('#edit-genre').val($(e.relatedTarget).data('title'));
-    $('#edit-album-image').val($(e.relatedTarget).data('title'));
+
   });
 
   $('#albums').on('click', '.save-edit-album-btn', function(e) {
@@ -294,8 +312,12 @@ $(document).ready(function() {
                     <div class='panel-footer'>
                     <button class='delete-album btn btn-danger pull-right' data-id=${album._id}>Delete Album</button>
                     <button class='add-songs btn btn-primary pull-left' data-id=${album._id}>Add Songs</button>
-                    <button class='edit-album btn btn-info pull-left' data-id=${album._id}>Edit</button>
 
+
+
+                    <div class="col-md-4 pull-right">
+                      <button class='edit-album btn btn-info pull-right' data-id=${album._id}>Edit Album</button>
+                    </div>
 
                         <!-- begin songModal: this is not visible until you call .modal() on it -->
 
@@ -315,7 +337,7 @@ $(document).ready(function() {
                                     <div class="form-group" id="song-input-field">
                                       <label class="col-md-4 control-label" for="song-name">Song Name</label>
                                       <div class="col-md-4">
-                                        <input id="song-name" name="song-name" value="${album.songs[0]}" type="text" placeholder="" class="form-control input-md" required="">
+                                        <input id="song-name" name="song-name" value="${album.songs[0].name}" type="text" placeholder="" class="form-control input-md" required="">
                                       </div>
                                     </div>
 
@@ -323,7 +345,7 @@ $(document).ready(function() {
                                     <div class="form-group">
                                       <label class="col-md-4 control-label" for="track-number">Track Number</label>
                                       <div class="col-md-4">
-                                        <input id="track-number" name="track-number" type="text" placeholder="" class="form-control input-md" required="">
+                                        <input id="track-number" name="track-number" value="${album.songs[0].trackNumber}" type="text" placeholder="" class="form-control input-md" required="">
                                       </div>
                                     </div>
 
@@ -417,6 +439,82 @@ $(document).ready(function() {
             </div>
             <!-- end one album -->`
             $('#albums').prepend(listedAlbum);
+
   }
 
+
+function showAlbumSuccess (album) {
+    console.log(album);
+    
+    album.genres = album.genres.join(', ');
+
+    var albumSongsList = album.songs.map(function (song) {
+      return `- (${ song.trackNumber }) ${ song.name }`;
+    });
+    var albumSongsListStr = albumSongsList.join(', ');
+
+
+     var showAlbum =  `  <!-- one album -->
+            <div class="row album" data-album-id="${album._id}">
+
+              <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                  <!-- begin album internal row -->
+                    <div class='row'>
+                      <div class="col-md-3 col-xs-12 thumbnail album-art">
+                        <img src="${album.image}" alt="album image">
+                      </div>
+
+                      <div class="col-md-9 col-xs-12">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>Album Name:</h4>
+                            <span class='album-name'>${album.name}</span>
+                          </li>
+
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>Artist Name:</h4>
+                            <span class='artist-name'>${album.artistName}</span>
+                          </li>
+
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>Released date:</h4>
+                            <span class='album-releaseDate'>${album.releaseDate}</span>
+                          </li>
+
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>genres</h4>
+                            <span class='album-genres'>${album.genres}</span>
+                          </li>
+
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>Songs</h4>
+                            <br />
+                            <span class='album-songs'>${ albumSongsListStr }</span>
+                            <br />
+                            
+                          </li>
+                        </ul>
+                      </div>
+
+                    </div>
+                    <!-- end of album internal row -->
+
+                  <div class='panel-footer'>
+                    </div>
+                  </div>
+               
+              </div>
+            </div>
+          </div> 
+
+          <-- end one album --> `
+
+          $('#show-album').append(showAlbum);
+
+          window.location.href = '/show.html';
+
+}
 
