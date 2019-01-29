@@ -15,7 +15,7 @@ function index(req, res) {
 
 function create(req, res) {
 	// create new album with data
-	console.log(req.params);
+	
 
 	var newAlbum = new db.Album({
 		name: req.body.name,
@@ -24,13 +24,13 @@ function create(req, res) {
 		genres: req.body.genres
 	});
 	newAlbum.save(function (err, newAlbumInDb) {
-		console.log(newAlbumInDb);
+		console.log('new album: ', newAlbumInDb);
 		res.json(newAlbumInDb);
 	});
 }
 
 function show(req, res) {
-	console.log(req.params);
+	// console.log(req.params);
 	db.Album.findById(req.params.id, function(err, locateAlbum) {
 		console.log(locateAlbum);
 		res.json(locateAlbum);
@@ -38,7 +38,7 @@ function show(req, res) {
 }
 
 function update(req, res) {
-	console.log(req.params);
+	// console.log(req.params);
 	var albumId = req.params.id
 	db.Album.findByIdAndUpdate(albumId, {
 		name: req.body.name,
@@ -53,7 +53,7 @@ function update(req, res) {
 
 function destroy(req, res) {
 
-	console.log(req.params);
+	// console.log(req.params);
 	var albumId = req.params.id;
 	db.Album.findByIdAndDelete(albumId, function(err, deletedAlbum) {
 		console.log(deletedAlbum);

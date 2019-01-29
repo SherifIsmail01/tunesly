@@ -18,4 +18,19 @@
 	height: 150px;
 }*/
 
+.album-internal-row {
+	background-color: #c1cdcd;
+}
+
+.song-field {
+  text-align: center;
+}
+
+.delete-song {
+  margin-right: 0;
+}
+
+
+
+
 

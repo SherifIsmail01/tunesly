@@ -24,11 +24,17 @@ app.get('/show', function (req, res) {
 
 app.get('/api', controllers.api.index);
 app.get('/api/albums', controllers.albums.index);
-app.post('/api/albums', controllers.albums.create);
 app.get('/api/albums/:id', controllers.albums.show);
-app.put('/api/albums/:id', controllers.albums.update);
-app.delete('/api/albums/:id', controllers.albums.destroy);
+app.get('/api/albums/:id/songs', controllers.albumsSongs.index);
+
+app.post('/api/albums', controllers.albums.create);
 app.post('/api/albums/:id/songs', controllers.albumsSongs.create);
+
+app.put('/api/albums/:id', controllers.albums.update);
+app.put('/api/albums/:id/songs/:id', controllers.albumsSongs.update);
+
+app.delete('/api/albums/:id', controllers.albums.destroy);
+app.delete('/api/albums/:id/songs/:id', controllers.albumsSongs.destroy);
 
 
 app.listen(process.env.PORT || 3000, function() {
